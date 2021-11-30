@@ -10,7 +10,8 @@ export type PayersThunkResult = ThunkAction<void, State, undefined, Action>
 
 
 const initialState = {
-    payers: [] as IPayer[]
+    payers: [] as IPayer[],
+    currentPayer: null as IPayer | null
 }
 
 const payersReducer = (state = initialState, action: Action): typeof initialState => {
@@ -46,6 +47,12 @@ const payersReducer = (state = initialState, action: Action): typeof initialStat
             return {
                 ...state,
                 payers: state.payers.filter(item => item.id !== action.payload)
+            }
+
+        case 'payers/SET_CURRENT_PAYER':
+            return {
+                ...state,
+                currentPayer: state.payers.find(item => item.id === action.payload) || null
             }
 
         default:

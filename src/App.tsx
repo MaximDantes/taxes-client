@@ -7,7 +7,7 @@ import {getDeclarations} from './store/declarations/thunks'
 import {getTaxes} from './store/taxes/thunks'
 import NavBar from './components/NavBar'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import {CssBaseline} from '@mui/material'
+import {Container, CssBaseline} from '@mui/material'
 import Rates from './components/Rates/Rates'
 import {getTaxesSelector} from './selectors/taxes-selectors'
 import KindsOfActivity from './components/KindsOfActivity/KindsOfActivity'
@@ -15,6 +15,7 @@ import {getKindsOfActivitySelector} from './selectors/kinds-of-activity-selector
 import {getRegionsSelector} from './selectors/regions-selectors'
 import Payers from './components/Payers/Payers'
 import {getPayersSelector} from './selectors/payers-selector'
+import Declarations from './components/Declarations/Declarations'
 
 const App: React.FC = () => {
     const dispatch = useDispatch()
@@ -24,7 +25,6 @@ const App: React.FC = () => {
         dispatch(getRegions())
         dispatch(getKindsOfActivity())
         dispatch(getPayers())
-        dispatch(getDeclarations())
     }, [])
 
     const taxes = useSelector(getTaxesSelector)
@@ -39,16 +39,18 @@ const App: React.FC = () => {
 
             <NavBar/>
 
-            <Routes>
-                <Route path={'kindsOfActivity'} element={<KindsOfActivity kindOfActivity={kindsOfActivity}/>}/>
-                <Route path={'rates'} element={<Rates taxes={taxes}/>}/>
-                <Route path={'payers'} element={
-                    <Payers payers={payers}
-                            regions={regions}
-                            kindsOfActivity={kindsOfActivity}
-                    />
-                }/>
-            </Routes>
+            <Container maxWidth={'lg'} sx={{padding: '15px 0'}}>
+                <Routes>
+                    <Route path={'kindsOfActivity'} element={<KindsOfActivity kindOfActivity={kindsOfActivity}/>}/>
+                    <Route path={'rates'} element={<Rates taxes={taxes}/>}/>
+                    <Route path={'payers'} element={
+                        <Payers payers={payers} regions={regions} kindsOfActivity={kindsOfActivity}/>
+                    }/>
+                    <Route path={'payers/:id'} element={
+                        <Declarations payers={payers} regions={regions} kindsOfActivity={kindsOfActivity}/>
+                    }/>
+                </Routes>
+            </Container>
         </BrowserRouter>
     </>
 }

@@ -12,10 +12,10 @@ export interface IKindOfActivityWithoutId {
     title: string
     useInSimpleTax: boolean
 }
-
 export interface IKindOfActivity extends IKindOfActivityWithoutId{
     id: string
 }
+
 
 export interface IPayerWithoutId {
     name: string
@@ -25,10 +25,10 @@ export interface IPayerWithoutId {
     regionId: string
     kindOfActivityId: string
 }
-
 export interface IPayer extends IPayerWithoutId{
     id: string
 }
+
 
 export interface ITaxRate {
     id: string
@@ -37,10 +37,14 @@ export interface ITaxRate {
     regionId?: string
 }
 
-export interface IDeclaration {
-    id: string
+
+export interface IDeclarationWithoutId {
     payerId: string
+    taxRateId: string
     term: Date
     date: Date
     sum: number
+}
+export interface IDeclaration extends IDeclarationWithoutId{
+    id: string
 }

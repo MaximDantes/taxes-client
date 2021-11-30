@@ -1,6 +1,6 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
-import {AppBar, Toolbar, Typography} from '@mui/material'
+import {AppBar, Container, Link, Toolbar, Typography} from '@mui/material'
 
 const NavBar: React.FC = () => {
     const links = [
@@ -10,15 +10,15 @@ const NavBar: React.FC = () => {
     ]
 
     return <AppBar position={'static'}>
-        <Toolbar>
-            {links.map(item => (
-                <Typography variant={'h6'} key={item.link}>
-                    <NavLink to={item.link}>
+        <Container maxWidth={'lg'}>
+            <Toolbar sx={{gap: '20px'}}>
+                {links.map(item => (
+                    <NavLink to={item.link} key={item.link}>
                         {item.title}
                     </NavLink>
-                </Typography>
-            ))}
-        </Toolbar>
+                ))}
+            </Toolbar>
+        </Container>
     </AppBar>
 }
 

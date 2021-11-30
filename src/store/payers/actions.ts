@@ -19,3 +19,8 @@ export const _deletePayer = (payerId: string) => ({
     type: 'payers/DELETE_PAYER',
     payload: payerId
 } as const)
+
+export const _setCurrentPayer = (payerId: string) => ({
+    type: 'payers/SET_CURRENT_PAYER',
+    payload: payerId
+} as const)

@@ -5,6 +5,7 @@ import {Add} from '@mui/icons-material'
 import {useDispatch} from 'react-redux'
 import {addPayer, deletePayer, editPayer} from '../../store/payers/thunks'
 import PayersModal from './PayersModal'
+import {useNavigate} from 'react-router-dom'
 
 type Props = {
     payers: IPayer[]
@@ -14,41 +15,24 @@ type Props = {
 
 const Payers: React.FC<Props> = (props) => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [open, setOpen] = useState(false)
-    const [selectedPayer, setSelectedPayer] = useState<IPayer | null>(null)
-
 
     const add = (payer: IPayerWithoutId) => {
+        setOpen(false)
         dispatch(addPayer(payer))
     }
-    const edit = (payer: IPayer) => {
-        dispatch(editPayer(payer))
-    }
-    const remove = (payerId: string) => {
-        dispatch(deletePayer(payerId))
-    }
-
-    const onAddClick = () => {
-        setSelectedPayer(null)
-        setOpen(true)
-    }
-
-    const onModalClose = () => {
-        setSelectedPayer(null)
-        setOpen(false)
-    }
-
 
     return <>
         <PayersModal open={open}
-                     onClose={onModalClose}
-                     payer={selectedPayer}
+                     onClose={() => setOpen(false)}
                      regions={props.regions}
                      kindsOfActivity={props.kindsOfActivity}
+                     add={add}
         />
 
-        <IconButton onClick={onAddClick}>
+        <IconButton onClick={() => setOpen(true)}>
             <Add/>
         </IconButton>
 
@@ -64,7 +48,7 @@ const Payers: React.FC<Props> = (props) => {
                 </TableHead>
                 <TableBody>
                     {props.payers.map(item => (
-                        <TableRow key={item.id}>
+                        <TableRow key={item.id} onClick={() => navigate(item.id)}>
                             <TableCell>{`${item.name} ${item.surname} ${item.secondName}`}</TableCell>
                             <TableCell>{item.passport}</TableCell>
                             <TableCell>

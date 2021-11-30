@@ -1,12 +1,15 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {ITax} from '../../types/dto'
 import {
+    IconButton,
     MenuItem,
     Paper,
     Select,
     SelectChangeEvent,
-    Table, TableBody,
-    TableCell, TableContainer,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
     TableHead,
     TableRow,
     TextField
@@ -16,6 +19,7 @@ import {getCurrentTaxSelector} from '../../selectors/taxes-selectors'
 import {setCurrentTax} from '../../store/taxes/thunks'
 import {getTaxRatesSelector} from '../../selectors/tax-rates-selectors'
 import {getRegionsSelector} from '../../selectors/regions-selectors'
+import {Add} from '@mui/icons-material'
 
 type Props = {
     taxes: ITax[]
@@ -34,6 +38,8 @@ const Rates: React.FC<Props> = (props) => {
         dispatch(setCurrentTax(e.target.value))
     }
 
+    const isSingleTax = !(taxRates.length === 1 && !taxRates[0].regionId)
+
     return <>
         <Select value={currentTax?.id || ''} onChange={onSelectChange}>
             {props.taxes.map(item => (
@@ -41,12 +47,14 @@ const Rates: React.FC<Props> = (props) => {
             ))}
         </Select>
 
-        {(taxRates.length === 1 && !taxRates[0].regionId)
+        {isSingleTax &&
+            <IconButton>
+                <Add/>
+            </IconButton>
+        }
+
+        {isSingleTax
             ?
-            <>
-                <TextField value={taxRates[0].value}/>
-            </>
-            :
             <>
                 <TableContainer component={Paper}>
                     <Table>
@@ -66,6 +74,10 @@ const Rates: React.FC<Props> = (props) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+            </>
+            :
+            <>
+                <TextField value={taxRates[0].value}/>
             </>
         }
     </>

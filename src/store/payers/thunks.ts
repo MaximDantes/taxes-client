@@ -1,8 +1,9 @@
 import {PayersThunkResult} from './reducer'
-import {_addPayer, _deletePayer, _editPayer, _setPayers} from './actions'
+import {_addPayer, _deletePayer, _editPayer, _setCurrentPayer, _setPayers} from './actions'
 import {setError} from '../app/thunks'
 import payersApi from '../../api/payers-api'
 import {IPayer, IPayerWithoutId} from '../../types/dto'
+import {getDeclarations} from '../declarations/thunks'
 
 export const getPayers = (): PayersThunkResult => async (dispatch) => {
     try {
@@ -46,4 +47,10 @@ export const deletePayer = (payerId: string): PayersThunkResult => async (dispat
         dispatch(setError(true))
         console.error(e)
     }
+}
+
+export const setCurrentPayer = (payerId: string): PayersThunkResult => async (dispatch) => {
+    dispatch(getDeclarations(payerId))
+
+    dispatch(_setCurrentPayer(payerId))
 }
